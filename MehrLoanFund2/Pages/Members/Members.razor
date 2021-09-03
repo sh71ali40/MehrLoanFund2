@@ -1,0 +1,57 @@
+﻿@page "/Members"
+@using Models.Objects
+@using Services.Services
+@inject NavigationManager _navigationManager
+
+
+<AuthorizeView>
+    <Authorized>
+        
+        
+        <div class="row">
+            <div class="col-12">
+                <a href="members/addedit" class="btn btn-success">
+                    <i class="fas fa-plus"></i>
+                    افزودن
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <TelerikGrid Data="@Users" Height="400px"
+                             Pageable="true" Sortable="true" Groupable="true"
+                             FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+                             Resizable="true" Reorderable="true">
+                    <GridColumns>
+                        <GridColumn Field="@(nameof(UserDto.NationalNum))" Title="کد ملی" />
+                        <GridColumn Field="@(nameof(UserDto.FirstName))" Title="نام" />
+                        <GridColumn Field="@(nameof(UserDto.LastName))" Title="نام خانوادگی" Groupable="false" />
+                        <GridColumn Field="@(nameof(UserDto.AccountNum))" Title="شماره حساب" />
+                        <GridColumn Field="@(nameof(UserDto.CardNum))" Title="شماره کارت" />
+                        <GridColumn Field="@(nameof(UserDto.Sheba))" Title="شبا" />
+                        <GridCommandColumn Width="250px">
+                            <GridCommandButton Command="Save" Icon="save" OnClick="OnEditClick">
+                                ویرایش
+                            </GridCommandButton>
+                            <GridCommandButton Command="Detail" Icon="Detail" OnClick="OnDetailClick">
+                                وام ها
+                            </GridCommandButton>
+                            <GridCommandButton Command="Detail" Icon="Detail" OnClick="OnPaymentClick">
+                                ثبت پرداختی
+                            </GridCommandButton>
+
+                            <GridCommandButton Command="Remove" Icon="delete" OnClick="OnRemoveClick">
+                                حذف
+                            </GridCommandButton>
+                        </GridCommandColumn>
+                         
+                    </GridColumns>
+
+                </TelerikGrid>
+            </div>
+        </div>
+
+    </Authorized>
+</AuthorizeView>
+
+ 

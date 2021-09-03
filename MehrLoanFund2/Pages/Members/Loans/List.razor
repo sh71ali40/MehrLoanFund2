@@ -1,0 +1,102 @@
+﻿@page "/Members/Detail/{MemberId:int}"
+@using Models.Objects
+
+@if (Member == null)
+{
+    <div class="alert alert-info" role="alert">
+        کاربری با این مشخصات پیدا نشد، لطفا مجددا امتحان کنید
+    </div>
+}
+else
+{
+    <AuthorizeView>
+        <Authorized>
+             
+            <div class="row">
+                <div class="col-md-4 col-12">
+                    <label>
+                        کد ملی: 
+                    </label>
+                    <span class="text-red">@Member.NationalNum</span>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label>
+                        نام: 
+                    </label>
+                    <span class="text-red">@Member.FirstName</span>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label>
+                        نام خانوادگی: 
+                    </label>
+                    <span class="text-red">@Member.LastName</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-12">
+                    <label>
+                        شماره حساب
+                    </label>
+                    <span class="text-red">
+                        @(!string.IsNullOrEmpty(Member.AccountNum)? Member.AccountNum:"-")
+                    </span>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label>
+                        شماره شبا
+                    </label>
+                    <span class="text-red">
+                        @(!string.IsNullOrEmpty(Member.Sheba) ? Member.Sheba:"-")
+                        
+                    </span>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label>
+                        شماره کارت
+                    </label>
+                    <span class="text-red">
+                        @(!string.IsNullOrEmpty(Member.CardNum) ? Member.CardNum:"-")
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <a href="Members/Loan/AddEdit/@MemberId" class="btn btn-success">
+                        <i class="fas fa-plus"></i>
+                         ثبت وام جدید
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <TelerikGrid Data="@Loans" Height="400px"
+                                 Pageable="true" Sortable="true" Groupable="true"
+                                 FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+                                 Resizable="true" Reorderable="true">
+                        <GridColumns>
+                            <GridColumn DisplayFormat="{0:N0}" Field="@(nameof(LoanDto.PrePayment))" Title="پیش پرداخت" />
+                            <GridColumn DisplayFormat="{0:N0}" Field="@(nameof(LoanDto.MonthlyPayment))" Title="قسط" />
+                            <GridColumn DisplayFormat="{0:N0}" Field="@(nameof(LoanDto.LoanAmount))" Title="مبلغ وام"  />
+                            <GridColumn DisplayFormat="{0:N0}" Field="@(nameof(LoanDto.PersianLoanPaymentDate))" Title="تاریخ پرداخت وام" />
+                            
+                            <GridCommandColumn Width="250px">
+                                <GridCommandButton Command="Save" Icon="save" OnClick="OnEditClick">
+                                    ویرایش
+                                </GridCommandButton>
+                                <GridCommandButton Command="Detail" Icon="Detail" OnClick="OnDetailClick">
+                                    جزئیات
+                                </GridCommandButton>
+                                <GridCommandButton Command="Remove" Icon="delete" OnClick="OnRemoveClick">
+                                    حذف
+                                </GridCommandButton>
+                            </GridCommandColumn>
+                         
+                        </GridColumns>
+
+                    </TelerikGrid>
+                </div>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+}
+

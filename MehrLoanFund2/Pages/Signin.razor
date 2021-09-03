@@ -1,0 +1,64 @@
+﻿@page "/"
+@using Models.Objects
+@using MehrLoanFund2.Utilities
+@using Microsoft.AspNetCore.Http
+@using Services.Components
+@using Services.Services
+
+<EditForm Model="LoginDto" OnValidSubmit="SubmitForm">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <div class="row">
+        <div class="offset-md-4 col-md-5  col-sm-12">
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-danger" role="alert">
+
+                            @ErrorMessage
+
+
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            نام کاربری
+                        </label>
+                        <InputText @bind-Value="LoginDto.UserName" class="form-control"></InputText>
+                        <ValidationMessage For="() => LoginDto.UserName"></ValidationMessage>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            رمزعبور
+                        </label>
+                        <InputText @bind-Value="LoginDto.Password" type="password" class="form-control"></InputText>
+                        <ValidationMessage For="() => LoginDto.Password"></ValidationMessage>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-grid gap-2">
+                    <button class="btn btn-success btn-block">
+                        ورود
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</EditForm>
+
+
+ 

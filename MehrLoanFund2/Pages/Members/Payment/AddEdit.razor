@@ -1,0 +1,57 @@
+﻿@page "/Members/Payment/New/{MemberId:int}"
+ 
+@using MehrLoanFund2.Utilities
+ 
+<AuthorizeView>
+    <Authorized>
+        <EditForm Model="Payment" OnValidSubmit="SubmitForm">
+            <ChildContent Context="editContext">
+                @if (!string.IsNullOrEmpty(ErrorMessage))
+                {
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-danger" role="alert">
+                                @ErrorMessage
+                            </div>
+                        </div>
+                    </div>
+                }
+                <DataAnnotationsValidator></DataAnnotationsValidator>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">
+                                مبلغ پرداختی
+                            </label>
+                            <InputNumber @bind-Value="Payment.Amount" class="form-control"></InputNumber>
+                            <ValidationMessage For="() => Payment.Amount"></ValidationMessage>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">
+                                تاریخ پرداخت
+                            </label>
+                            <MudDatePicker Label=" تاریخ پرداخت" @bind-Date="Payment.PaymentDate" Culture="@Utility.GetPersianCulture()" DateFormat="dd/MM/yyyy" UseShortNames="false" TitleDateFormat="dddd, dd MMMM" />
+                            <ValidationMessage For="() => Payment.PaymentDate"></ValidationMessage>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success float-end">
+                            <i class="fas fa-check"></i>
+                            ثبت
+                        </button>
+                        <a href="#" class="btn btn-warning float-end mx-2">
+                            <i class="fas fa-ban"></i>
+                            انصراف
+                        </a>
+                    </div>
+                </div>
+            </ChildContent>
+        </EditForm>
+    </Authorized>
+</AuthorizeView>

@@ -1,0 +1,96 @@
+﻿@page "/Members/Payment/{MemberId:int}"
+@using Models.Objects
+
+
+@if (Member == null)
+{
+    <div class="alert alert-info" role="alert">
+        کاربری با این مشخصات پیدا نشد، لطفا مجددا امتحان کنید
+    </div>
+}
+else
+{
+    <AuthorizeView>
+        <Authorized>
+
+            <div class="row">
+                <div class="col-md-4 col-12">
+                    <label>
+                        کد ملی:
+                    </label>
+                    <span class="text-red">@Member.NationalNum</span>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label>
+                        نام:
+                    </label>
+                    <span class="text-red">@Member.FirstName</span>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label>
+                        نام خانوادگی:
+                    </label>
+                    <span class="text-red">@Member.LastName</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-12">
+                    <label>
+                        شماره حساب
+                    </label>
+                    <span class="text-red">
+                        @(!string.IsNullOrEmpty(Member.AccountNum)? Member.AccountNum:"-")
+                    </span>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label>
+                        شماره شبا
+                    </label>
+                    <span class="text-red">
+                        @(!string.IsNullOrEmpty(Member.Sheba) ? Member.Sheba:"-")
+
+                    </span>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label>
+                        شماره کارت
+                    </label>
+                    <span class="text-red">
+                        @(!string.IsNullOrEmpty(Member.CardNum) ? Member.CardNum:"-")
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <a href="Members/Payment/New/@Member.Id" class="btn btn-success">
+                        <i class="fas fa-plus"></i>
+                        افزودن
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <TelerikGrid Data="@Payments" Height="400px"
+                                 Pageable="true" Sortable="true" Groupable="true"
+                                 FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+                                 Resizable="true" Reorderable="true">
+                        <GridColumns>
+                            <GridColumn DisplayFormat="{0:N0}" Field="@(nameof(PaymentDto.Amount))" Title="مبلغ پرداختی" />
+                            <GridColumn DisplayFormat="{0:N0}" Field="@(nameof(PaymentDto.PersianPaymentDate))" Title="تاریخ پرداخت" />
+                            <GridColumn DisplayFormat="{0:N0}" Field="@(nameof(PaymentDto.PersianSubmitDateTime))" Title="تاریخ ثبت" />
+                            
+                            <GridCommandColumn Width="250px">
+                                <GridCommandButton Command="Remove" Icon="delete" OnClick="OnRemoveClick">
+                                    حذف
+                                </GridCommandButton>
+                            </GridCommandColumn>
+
+                        </GridColumns>
+
+                    </TelerikGrid>
+                </div>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+}

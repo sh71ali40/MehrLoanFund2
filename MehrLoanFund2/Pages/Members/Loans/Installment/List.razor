@@ -1,0 +1,155 @@
+﻿@page "/Members/Loan/Installments/{LoanId:int}"
+@using Models.Objects
+
+@if (LoanDto == null)
+{
+    <div class="alert alert-info" role="alert">
+        وامی با این مشخصات پیدا نشد، لطفا مجددا امتحان کنید
+    </div>
+}
+else
+{
+    <AuthorizeView>
+        <Authorized>
+            <div class="row">
+                <div class="col-md-4 col-12">
+                    <label>
+                        کد ملی:
+                    </label>
+                    <span class="text-red">@Member.NationalNum</span>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label>
+                        نام:
+                    </label>
+                    <span class="text-red">@Member.FirstName</span>
+                </div>
+                <div class="col-md-4 col-12">
+                    <label>
+                        نام خانوادگی:
+                    </label>
+                    <span class="text-red">@Member.LastName</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-12">
+                    <label>
+                        پیش پرداخت:
+                    </label>
+                    @if (LoanDto.PrePayment != null)
+                    {
+                        <span class="text-red">@LoanDto.PrePayment.Value.ToString("N0")</span>
+
+                    }
+                    else
+                    {
+                        <span class="text-red">
+                            هنوز وامی به کاربر پرداخت نشده است
+                        </span>
+                    }
+                    
+                    
+                </div>
+
+                <div class="col-md-4 col-12">
+                    <label>
+                        مبلغ وام:
+                    </label>
+                    @if (LoanDto.LoanAmount != null)
+                    {
+                        <span class="text-red">@LoanDto.LoanAmount.Value.ToString("N0")</span>
+                    }
+                    else
+                    {
+                        <span class="text-red">
+                            هنوز وامی به کاربر پرداخت نشده است
+                        </span>
+                    }
+                </div>
+
+                <div class="col-md-4 col-12">
+                    
+                    <label>
+                        تاریخ پرداخت:
+                    </label>
+                    @if (LoanDto.LoanPaymentDate != null)
+                    {
+                        <span class="text-red">@LoanDto.PersianLoanPaymentDate</span>
+                    }
+                    else
+                    {
+                        <span class="text-red">
+                            هنوز وامی به کاربر پرداخت نشده است
+                        </span>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-12">
+
+                    <label>
+                        مجموع اقساط پرداختی
+                    </label>
+
+                    <span class="text-red">@TotalPayedInstallment.ToString("N0")</span>
+
+                </div>
+                <div class="col-md-4 col-12">
+
+                    <label>
+                        مجموع حق عضویت پرداختی
+                    </label>
+
+                    <span class="text-red">@TotalPayedMemeberShipFee.ToString("N0")</span>
+
+                </div>
+
+                <div class="col-md-4 col-12">
+
+                    <label>
+                        مجموع کل پرداختی
+                    </label>
+
+                    <span class="text-red">@TotalPayment.ToString("N0")</span>
+
+                </div>
+            </div>
+            @*<div class="row">
+                <div class="col-12">
+                    <a href="Members/Loan/Installments/AddEdit/@LoanDto.Id" class="btn btn-success">
+                        <i class="fas fa-plus"></i>
+                        افزودن
+                    </a>
+                </div>
+            </div>*@
+            
+            <div class="row">
+                <div class="col-12">
+                    <TelerikGrid Data="@Installments" Height="400px"
+                                 Pageable="true" Sortable="true" Groupable="true"
+                                 FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+                                 Resizable="true" Reorderable="true">
+                        <GridColumns>
+                            <GridColumn DisplayFormat="{0:N0}" Field="@(nameof(InstallmentDto.MemberShipFee))" Title="حق عضویت" />
+                            <GridColumn DisplayFormat="{0:N0}" Field="@(nameof(InstallmentDto.MonthlyPayment))" Title="قسط" />
+                            <GridColumn DisplayFormat="{0:N0}" Field="@(nameof(InstallmentDto.Price))" Title="مجموع" />
+                            <GridColumn Field="@(nameof(InstallmentDto.PersianPaymentDate))" Title="تاریخ پرداخت"  />
+                            
+                            <GridCommandColumn Width="250px">
+                                <GridCommandButton Command="Save" Icon="save" OnClick="OnEditClick">
+                                    ویرایش
+                                </GridCommandButton>
+                                 
+                                <GridCommandButton Command="Remove" Icon="delete" OnClick="OnRemoveClick">
+                                    حذف
+                                </GridCommandButton>
+                            </GridCommandColumn>
+                         
+                        </GridColumns>
+
+                    </TelerikGrid>
+                </div>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+}
